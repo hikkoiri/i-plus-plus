@@ -1,0 +1,13 @@
+{
+  "name": "lambda-i-plus-plus",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "*",
+    "@types/uuid": "*"
+  },
+  "dependencies": {
+    "aws-sdk": "*",
+    "uuid": "*"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "i-plus-plus",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "(cd lambdas && npm install);",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "aws-cdk": "*",
+    "esbuild": "*",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.0.0",
+    "constructs": "^10.0.0"
+  }
+}
