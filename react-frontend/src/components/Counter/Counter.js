@@ -19,12 +19,13 @@ const Counter = ({ }) => {
             setCurrentCount(data)
         }
         fetchCurrentCount()
-    },[]);
+    }, []);
 
     useEffect(() => {
-        setTimeout(() => {
-            var newValue = "3"
-            setCurrentCount(newValue)
+        setTimeout(async function () {
+            const res = await fetch(countingApi + increasePath)
+            var data = await res.text()
+            setCurrentCount(data)
         }, 3000);
     }, []);
 
@@ -41,23 +42,26 @@ const Counter = ({ }) => {
     }, []);
     return (
         <>
-            {(currentCount === undefined) &&
-                <>
-                    <p>loading...</p>
-                </>
-            }
-            {(currentCount !== undefined) &&
-                <>
-                    <p>
-                        Total amount of website visits: {currentCount}
-                        {(showHint) &&
-                            <>
-                                &thinsp;&thinsp;&thinsp;&lt;-- That is you
-                            </>
-                        }
-                    </p>
-                </>
-            }
+            <p>
+                Total amount of website visits:&thinsp;
+
+                {(currentCount === undefined) &&
+                    <>
+                        loading...
+                    </>
+                }
+                {(currentCount !== undefined) &&
+                    <>
+                        {currentCount}
+                    </>
+                }
+
+                {(showHint) &&
+                    <>
+                        &thinsp;&thinsp;&thinsp;&lt;-- That is you
+                    </>
+                }
+            </p>
         </>
     );
 
