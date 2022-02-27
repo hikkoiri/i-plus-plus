@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 
 
-const Counter = ({ }) => {
+const Counter = () => {
 
     const countingApi = "https://counter.carlo-hildebrandt.de"
     const increasePath = "/increase"
