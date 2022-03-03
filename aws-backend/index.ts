@@ -60,7 +60,10 @@ export class CounterBackendStack extends Stack {
       entry: join(__dirname, 'lambdas', 'get.ts'),
       ...nodeJsFunctionProps,
     });
-
+    const prometheusLambda = new NodejsFunction(this, 'prometheusFunction', {
+      entry: join(__dirname, 'lambdas', 'prometheus.ts'),
+      ...nodeJsFunctionProps,
+    });
     const increaseLambda = new NodejsFunction(this, 'increaseFunction', {
       entry: join(__dirname, 'lambdas', 'increase.ts'),
       ...nodeJsFunctionProps,
@@ -69,10 +72,12 @@ export class CounterBackendStack extends Stack {
 
     // Grant the Lambda function access to the DynamoDB table
     counterDynamoTable.grantReadData(getLambda)
+    counterDynamoTable.grantReadData(prometheusLambda)
     counterDynamoTable.grantReadWriteData(increaseLambda)
 
     // Integrate the Lambda functions with the API Gateway resource
     const getIntegration = new LambdaIntegration(getLambda);
+    const prometheusIntegration = new LambdaIntegration(prometheusLambda);
     const increaseIntegration = new LambdaIntegration(increaseLambda);
 
     // Prepare API Gateway
@@ -104,6 +109,11 @@ export class CounterBackendStack extends Stack {
 
     api.root.addMethod('GET', getIntegration);
     addCorsOptions(api.root, CORS_ALLOWED_ORIGIN);
+
+
+    const prometheus = api.root.addResource('prometheus');
+    prometheus.addMethod('GET', prometheusIntegration);
+    addCorsOptions(prometheus, CORS_ALLOWED_ORIGIN);
 
     const increase = api.root.addResource('increase');
     increase.addMethod('GET', increaseIntegration);
