@@ -27,7 +27,7 @@ export class CounterBackendStack extends Stack {
     const COUNTER_TABLE_NAME = "counter";
     const COUNTER_PRIMARY_KEY = "_id";
     const COUNTER_PRIMARY_KEY_VALUE = "theOneAndOnlyTruth"
-    const CORS_ALLOWED_ORIGIN = "*"//"https://" + domainName
+    const CORS_ALLOWED_ORIGIN = "https://" + domainName
 
     const counterDynamoTable = new Table(this, 'Counter', {
       partitionKey: {
