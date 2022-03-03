@@ -111,7 +111,7 @@ export class CounterBackendStack extends Stack {
     addCorsOptions(api.root, CORS_ALLOWED_ORIGIN);
 
 
-    const prometheus = api.root.addResource('prometheus');
+    const prometheus = api.root.addResource('metrics');
     prometheus.addMethod('GET', prometheusIntegration);
     addCorsOptions(prometheus, CORS_ALLOWED_ORIGIN);
 
