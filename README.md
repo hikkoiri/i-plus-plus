@@ -45,7 +45,11 @@ curl https://i-plus-plus.carlo-hildebrandt.de/
 ```
 returns
 ```json
-{"origin":"unknown","allTimeCount":5,"dailyCount":3
+{
+  "origin" : "unknown",
+  "allTimeCount" : 5,
+  "dailyCount" : 3
+}
 ```
 
 
@@ -83,6 +87,6 @@ cdk destroy
 
 
 ## TODOs
-- [ ] Provide SVG Badge, like: https://github.com/gjbae1212/go-counter-badge
+- [ ] Provide SVG Badge, like: <https://github.com/hikkoiri/go-counter-badge>
 - [ ]  Configure timezone for daily merge at midnight (right now UTC is used)
 - [ ]  Implement CI/CD pipeline
