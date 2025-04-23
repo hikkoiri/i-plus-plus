@@ -1,0 +1,59 @@
+import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb';
+const COUNTER_TABLE_NAME = process.env.COUNTER_TABLE_NAME!;
+const COUNTER_PRIMARY_KEY = process.env.COUNTER_PRIMARY_KEY!;
+
+const db = new DynamoDBClient();
+
+export const handler = async (event: any = {}): Promise<any> => {
+
+    let origin;
+    const queryOrigin = event.queryStringParameters?.origin;
+    if (queryOrigin) {
+        console.log("Origin found in query parameters: " + queryOrigin);
+        origin = queryOrigin;
+    }
+    else {
+        origin = event.headers?.Origin || event.headers?.origin || "unknown";
+        console.log("Origin found from header" + origin)
+    }
+
+    var current = await getCurrentCount(origin)
+    console.log("Retrieved record from database to: " + JSON.stringify(current))
+
+
+    return {
+        statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": origin ,
+            "Content-Type": "text/plain"
+        },
+        body: `daily_count{origin="${current.origin}"} ${current.dailyCount}
+all_time_count{origin="${current.origin}"} ${current.allTimeCount}`
+    };
+};
+
+
+async function getCurrentCount(origin: string): Promise<any> {
+    const params = {
+        TableName: COUNTER_TABLE_NAME,
+        Key: {
+            [COUNTER_PRIMARY_KEY]: { S: origin }
+        }
+    };
+    const command = new GetItemCommand(params);
+    const response = await db.send(command);
+    if (!response.Item) {
+        return {
+            origin,
+            allTimeCount: 0,
+            dailyCount: 0
+        };
+    }
+    else {
+        return {
+            origin,
+            allTimeCount: parseInt(response.Item.allTimeCount.N!),
+            dailyCount: parseInt(response.Item.dailyCount.N!)
+        };
+    }
+}

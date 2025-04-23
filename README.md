@@ -2,29 +2,77 @@
 
 - [i++](#i)
   - [About](#about)
-  - [Live Demo](#live-demo)
-  - [AWS Backend](#aws-backend)
+  - [Working principles](#working-principles)
+    - [Default header](#default-header)
+    - [`origin` global query parameters](#origin-global-query-parameters)
+  - [Endpoints](#endpoints)
+    - [Standard JSON](#standard-json)
+    - [Prometheus](#prometheus)
+  - [Service deployment](#service-deployment)
+    - [Deploment configuration](#deploment-configuration)
     - [Deploy](#deploy)
     - [Teardown](#teardown)
-  - [React Frontend](#react-frontend)
-    - [Local development](#local-development)
+  - [TODOs](#todos)
 
 ## About
+> With the deprecation of the popular repo <https://github.com/gjbae1212/hit-counter>, it is time to revive this project again.
 
-Did you ever wonder how many people ever visited your website? This project will help you figuring it out. It includes a simple three tier web application using AWS serverless services (so its practically free) which simply counts the amount of API calls against the counting API. The API is exposed over an API gateway, the counting logic is implemented within Lambda, the state is stored within DynamoDB. Pretty straightforward. 
+Count daily and overall website visits.
 
-> Yes, the implementation is not perfect  since race conditions can occur. Synchronized database access could be implemented, but for the expected amount of traffic I won't bother with that.
+## Working principles
+The way this service works is quite straight-forward. By calling this service the number of daily visits for the respective origin is increased by one. By the end of each day, the daily count will be reset and added to the total amount. There is an implicit and explicit way how the origin is identified. If none is identified it will default to `unknwown`.
 
-## Live Demo
+### Default header
+Implicitly the website, where this service can be embedded in, shall provide its hostname in the `origin` header that is read by the service.
 
-The feature is currently available on [carlo-hildebrandt.de](https://carlo-hildebrandt.de).
+### `origin` global query parameters
 
-## AWS Backend
+For other use cases, where you cannot append the origin http header or want to intentionally override it, you can append an explicit query parameter in the url path:
+```
+?origin=test
+``` 
+
+
+
+##  Endpoints
+The service provides several endpoints for different use cases.
+
+### Standard JSON
+This is the default route which returns all information in the JSON format. Whenever this endpoint is called
+
+``` bash
+curl https://i-plus-plus.carlo-hildebrandt.de/
+```
+returns
+```json
+{"origin":"unknown","allTimeCount":5,"dailyCount":3
+```
+
+
+### Prometheus
+If you want to scrape the amount of users with prometheus, this is your endpoint. It will not bump the daily count, instead it only provides a read-only endpoint for the state that already matches the required Prometheus data model.
+
+``` bash
+curl https://i-plus-plus.carlo-hildebrandt.de/metrics
+```
+returns
+```
+daily_count{origin="unknown"} 3
+all_time_count{origin="unknown"} 5
+```
+
+
+## Service deployment
+
+You will need an AWS account and the cdk tools to deploy it from your local pc.
+
+### Deploment configuration
+You will have to adapt the configurations in `infra/config/prod.ts` to match your needs.
 
 ### Deploy
 
 ```bash
-npm run build && cdk deploy
+cd infra && cdk deploy
 ```
 
 ### Teardown
@@ -34,11 +82,7 @@ cdk destroy
 ```
 
 
-## React Frontend
-
-![Demo](doc/demo.gif)
-
-### Local development
-```bash
-npm start
-```
+## TODOs
+- [ ] Provide SVG Badge, like: https://github.com/gjbae1212/go-counter-badge
+- [ ]  Configure timezone for daily merge at midnight (right now UTC is used)
+- [ ]  Implement CI/CD pipeline

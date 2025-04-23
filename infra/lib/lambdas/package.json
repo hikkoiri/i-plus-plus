@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.788.0",
     "@types/node": "*",
     "@types/uuid": "*"
   },
   "dependencies": {
-    "aws-sdk": "*",
     "uuid": "*"
   }
 }
