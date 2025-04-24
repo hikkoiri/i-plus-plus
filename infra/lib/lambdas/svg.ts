@@ -27,7 +27,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         origin = queryOrigin;
     }
     else {
-        origin = event.headers?.Origin || event.headers?.origin || "unknown";
+        origin = event.headers?.referer || event.headers?.Referer || "unknown";
         console.log("Origin found from header: " + origin)
     }
 

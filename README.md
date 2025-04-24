@@ -48,7 +48,7 @@ Just embed the following code into your project:
 The way this service works is quite straight-forward. By calling this service the number of daily visits for the respective origin is increased by one. By the end of each day, the daily count will be reset and added to the total amount. There is an implicit and explicit way how the origin is identified. If none is identified it will default to `unknown`.
 
 ### Default header
-Implicitly the website, where this service can be embedded in, shall provide its hostname in the `origin` header that is read by the service.
+Implicitly the website, where this service can be embedded in, shall provide its hostname in the `referer` header that is read by the service.
 
 ### `origin` global query parameter
 
