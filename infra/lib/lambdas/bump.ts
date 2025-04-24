@@ -5,6 +5,7 @@ const COUNTER_PRIMARY_KEY = process.env.COUNTER_PRIMARY_KEY!;
 const db = new DynamoDBClient();
 
 export const handler = async (event: any = {}): Promise<any> => {
+    console.log("Received event: " + JSON.stringify(event));
 
     let origin;
     const queryOrigin = event.queryStringParameters?.origin;
@@ -14,7 +15,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     }
     else {
         origin = event.headers?.Origin || event.headers?.origin || "unknown";
-        console.log("Origin found from header" + origin)
+        console.log("Origin found from header: " + origin)
     }
 
     var current = await getCurrentCount(origin)

@@ -18,6 +18,7 @@ interface Badge {
 }
 
 export const handler = async (event: any = {}): Promise<any> => {
+    console.log("Received event: " + JSON.stringify(event));
 
     let origin;
     const queryOrigin = event.queryStringParameters?.origin;
@@ -27,7 +28,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     }
     else {
         origin = event.headers?.Origin || event.headers?.origin || "unknown";
-        console.log("Origin found from header" + origin)
+        console.log("Origin found from header: " + origin)
     }
 
     var current = await getCurrentCount(origin)
@@ -51,10 +52,14 @@ export const handler = async (event: any = {}): Promise<any> => {
         leftText = language === "de" ? "Aufrufe (täglich / insgesamt)" : "hits (daily / all time)";
     }
     const leftBackgroundColor = event.queryStringParameters?.leftBackgroundColor || "#333333"
-    const rightBackgroundColor = event.queryStringParameters?.rightBackgroundColor || "darkgreen"
+    let rightBackgroundColor = event.queryStringParameters?.rightBackgroundColor || "darkgreen"
+    let rightText = `${bumped.dailyCount} / ${bumped.allTimeCount}`;
 
-
-    const rightText = `${bumped.dailyCount} / ${bumped.allTimeCount}`;
+    if (origin === "unknown") {
+        rightBackgroundColor = "darkred";
+        rightText = "  - "
+        leftText = language === "de" ? "Unbekanntes 'origin'" : "unknown origin    ";
+    }
     const badge: Badge = {
         fontType: "Verdana",
         rightTextColor: "#fff",

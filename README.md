@@ -2,6 +2,7 @@
 
 - [i++](#i)
   - [About](#about)
+  - [Usage](#usage)
   - [Working principles](#working-principles)
     - [Default header](#default-header)
     - [`origin` global query parameter](#origin-global-query-parameter)
@@ -21,9 +22,27 @@
 
 Count daily and overall website visits:
 
-<a href="https://github.com/hikkoiri/i-plus-plus">
+<svg xmlns="http://www.w3.org/2000/svg" width="241" height="20">
+    <rect x="5" width="156" height="20" fill="#333333" />
+    <rect width="161" height="20" fill="#333333" ry="5" rx="5"/>
+    <text x="10" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
+        hits (daily / all time)
+    </text>
+    <rect x="161" width="75" height="20" fill="darkgreen"/>
+    <rect x="161" width="80" height="20" fill="darkgreen" ry="5" rx="5" />
+    <text x="166" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
+        1 / 123456
+    </text>
+</svg>
+
+## Usage
+
+Just embed the following code into your project:
+```html
+<a href="https://github.com/hikkoiri/i-plus-plus" target="_blank">
     <img alt="Page visit counter" src="https://i-plus-plus.carlo-hildebrandt.de/svg" />
 </a>
+```
 
 ## Working principles
 The way this service works is quite straight-forward. By calling this service the number of daily visits for the respective origin is increased by one. By the end of each day, the daily count will be reset and added to the total amount. There is an implicit and explicit way how the origin is identified. If none is identified it will default to `unknown`.
@@ -79,6 +98,20 @@ returns
     </text>
 </svg>
 
+If no origin is identified following badge is returned:
+
+<svg xmlns="http://www.w3.org/2000/svg" width="164" height="20">
+    <rect x="5" width="135" height="20" fill="#333333" />
+    <rect width="140" height="20" fill="#333333" ry="5" rx="5"/>
+    <text x="10" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
+        unknown origin      
+    </text>
+    <rect x="140" width="19" height="20" fill="darkred"/>
+    <rect x="140" width="24" height="20" fill="darkred" ry="5" rx="5" />
+    <text x="145" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
+          - 
+    </text>
+</svg>
 
 #### Query Parameters
 
