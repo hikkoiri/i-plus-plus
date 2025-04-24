@@ -21,6 +21,7 @@
 > With the deprecation of the popular repo <https://github.com/gjbae1212/hit-counter>, it is time to revive this project again.
 
 Count daily and overall website visits:
+
 <a href="https://github.com/hikkoiri/i-plus-plus" target="_blank">
     <img alt="Page visit counter" src="https://i-plus-plus.carlo-hildebrandt.de/svg?origin=github.com/hikkoiri/i-plus-plus" />
 </a>
