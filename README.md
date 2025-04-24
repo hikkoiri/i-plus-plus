@@ -21,19 +21,10 @@
 > With the deprecation of the popular repo <https://github.com/gjbae1212/hit-counter>, it is time to revive this project again.
 
 Count daily and overall website visits:
+<a href="https://github.com/hikkoiri/i-plus-plus" target="_blank">
+    <img alt="Page visit counter" src="https://i-plus-plus.carlo-hildebrandt.de/svg?origin=github.com/hikkoiri/i-plus-plus" />
+</a>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="241" height="20">
-    <rect x="5" width="156" height="20" fill="#333333" />
-    <rect width="161" height="20" fill="#333333" ry="5" rx="5"/>
-    <text x="10" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
-        hits (daily / all time)
-    </text>
-    <rect x="161" width="75" height="20" fill="darkgreen"/>
-    <rect x="161" width="80" height="20" fill="darkgreen" ry="5" rx="5" />
-    <text x="166" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
-        1 / 123456
-    </text>
-</svg>
 
 ## Usage
 
@@ -85,33 +76,15 @@ curl https://i-plus-plus.carlo-hildebrandt.de/
 ```
 returns
 
-<svg xmlns="http://www.w3.org/2000/svg" width="241" height="20">
-    <rect x="5" width="156" height="20" fill="#333333" />
-    <rect width="161" height="20" fill="#333333" ry="5" rx="5"/>
-    <text x="10" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
-        hits (daily / all time)
-    </text>
-    <rect x="161" width="75" height="20" fill="darkgreen"/>
-    <rect x="161" width="80" height="20" fill="darkgreen" ry="5" rx="5" />
-    <text x="166" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
-        1 / 123456
-    </text>
-</svg>
+<a href="https://github.com/hikkoiri/i-plus-plus" target="_blank">
+    <img alt="Page visit counter" src="https://i-plus-plus.carlo-hildebrandt.de/svg?origin=github.com/hikkoiri/i-plus-plus" />
+</a>
 
 If no origin is identified following badge is returned:
 
-<svg xmlns="http://www.w3.org/2000/svg" width="164" height="20">
-    <rect x="5" width="135" height="20" fill="#333333" />
-    <rect width="140" height="20" fill="#333333" ry="5" rx="5"/>
-    <text x="10" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
-        unknown origin      
-    </text>
-    <rect x="140" width="19" height="20" fill="darkred"/>
-    <rect x="140" width="24" height="20" fill="darkred" ry="5" rx="5" />
-    <text x="145" y="14" fill="#fff" textAnchor="middle" font-family="Verdana" font-size="12">
-          - 
-    </text>
-</svg>
+<a href="https://github.com/hikkoiri/i-plus-plus" target="_blank">
+    <img alt="Page visit counter" src="https://i-plus-plus.carlo-hildebrandt.de/svg?origin=unknown" />
+</a>
 
 #### Query Parameters
 
