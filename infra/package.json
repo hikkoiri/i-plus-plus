@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.186.0",
+    "badge-maker": "^5.0.2",
     "constructs": "^10.0.0",
     "esbuild": "^0.25.3"
   }

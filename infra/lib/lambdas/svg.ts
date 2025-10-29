@@ -1,4 +1,5 @@
 import { DynamoDBClient, GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
+import { makeBadge } from 'badge-maker'
 
 const COUNTER_TABLE_NAME = process.env.COUNTER_TABLE_NAME!;
 const COUNTER_PRIMARY_KEY = process.env.COUNTER_PRIMARY_KEY!;
@@ -41,17 +42,12 @@ export const handler = async (event: any = {}): Promise<any> => {
     console.log("Updating value in database to: " + JSON.stringify(bumped))
     await updateCount(bumped)
 
-
-
-
-
     // now check the query parameter for visual configuration
     const language = event.queryStringParameters?.language || "en";
     let leftText = event.queryStringParameters?.leftText;
     if (!leftText) {
         leftText = language === "de" ? "Aufrufe (täglich / insgesamt)" : "hits (daily / all time)";
     }
-    const leftBackgroundColor = event.queryStringParameters?.leftBackgroundColor || "#333333"
     let rightBackgroundColor = event.queryStringParameters?.rightBackgroundColor || "darkgreen"
     let rightText = `${bumped.dailyCount} / ${bumped.allTimeCount}`;
 
@@ -60,16 +56,14 @@ export const handler = async (event: any = {}): Promise<any> => {
         rightText = "  - "
         leftText = language === "de" ? "Unbekanntes 'origin'" : "unknown origin    ";
     }
-    const badge: Badge = {
-        fontType: "Verdana",
-        rightTextColor: "#fff",
-        leftTextColor: "#fff",
-        leftText,
-        leftBackgroundColor,
-        rightText,
-        rightBackgroundColor,
-        radius: 5,
-    };
+
+    const format = {
+        label: leftText,
+        message: rightText,
+        color: rightBackgroundColor,
+    }
+
+    const svg = makeBadge(format)
 
     return {
         statusCode: 200,
@@ -77,34 +71,10 @@ export const handler = async (event: any = {}): Promise<any> => {
             "Access-Control-Allow-Origin": origin,
             "Content-Type": "image/svg+xml"
         },
-        body: renderFlatBadge(badge)
+        body: svg
     };
 
 }
-
-
-function renderFlatBadge(badge: Badge): string {
-
-    const defaultBadgeHeight = 20;
-    const defaultFontSize = 12;
-    const leftWidth = badge.leftText.length * 7; // Approximation for text width
-    const rightWidth = badge.rightText.length * 8; // Approximation for text width
-
-    return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${leftWidth + rightWidth}" height="${defaultBadgeHeight}">
-        <rect x="${badge.radius}" width="${leftWidth - badge.radius}" height="${defaultBadgeHeight}" fill="${badge.leftBackgroundColor}" />
-        <rect width="${leftWidth}" height="${defaultBadgeHeight}" fill="${badge.leftBackgroundColor}" ry="${badge.radius}" rx="${badge.radius}"/>
-        <text x="${2 * badge.radius}" y="${14}" fill="${badge.leftTextColor}" textAnchor="middle" font-family="${badge.fontType}" font-size="${defaultFontSize}">
-            ${badge.leftText}
-        </text>
-        <rect x="${leftWidth}" width="${rightWidth - badge.radius}" height="${defaultBadgeHeight}" fill="${badge.rightBackgroundColor}"/>
-        <rect x="${leftWidth}" width="${rightWidth}" height="${defaultBadgeHeight}" fill="${badge.rightBackgroundColor}" ry="${badge.radius}" rx="${badge.radius}" />
-        <text x="${leftWidth + badge.radius}" y="${14}" fill="${badge.rightTextColor}" textAnchor="middle" font-family="${badge.fontType}" font-size="${defaultFontSize}">
-            ${badge.rightText}
-        </text>
-    </svg>`
-}
-
 
 async function getCurrentCount(origin: string): Promise<any> {
     const params = {
